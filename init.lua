@@ -841,8 +841,12 @@ require('lazy').setup({
     end,
   },
 
-  -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  -- Highlight TODO  , notes, etc in comments event = 'VimEnter', 
+  { 'folke/todo-comments.nvim',lazy=false, dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = true }, 
+    config = function()
+        require("todo-comments").setup()
+    end,
+  },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
