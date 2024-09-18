@@ -452,6 +452,43 @@ require('lazy').setup({
   },
   { 'Bilal2453/luvit-meta', lazy = true },
   {
+    "scalameta/nvim-metals",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "j-hui/fidget.nvim",
+        opts = {},
+      },
+      {
+        "mfussenegger/nvim-dap",
+        config = function(self, opts)
+          -- Debug settings if you're using nvim-dap
+          local dap = require("dap")
+
+          dap.configurations.scala = {
+            {
+              type = "scala",
+              request = "launch",
+              name = "RunOrTest",
+              metals = {
+                runType = "runOrTestFile",
+                --args = { "firstArg", "secondArg", "thirdArg" }, -- here just as an example
+              },
+            },
+            {
+              type = "scala",
+              request = "launch",
+              name = "Test Target",
+              metals = {
+                runType = "testTarget",
+              },
+            },
+          }
+        end
+      },
+    },
+  },
+  {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -617,7 +654,7 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
-        semgrep = {},
+        -- semgrep = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -632,6 +669,9 @@ require('lazy').setup({
             },
           },
         },
+      }
+      require('lspconfig').metals.setup{
+        filetypes = {"scala","sbt","java"}
       }
 
       -- Ensure the servers and tools above are installed
